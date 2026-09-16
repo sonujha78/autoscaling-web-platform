@@ -38,3 +38,8 @@ variable "desired_capacity" {
   type    = number
   default = 2
 }
+
+variable "key_name" {
+  description = "EC2 key pair name for SSH access"
+  type        = string
+}

@@ -12,6 +12,7 @@ resource "aws_launch_template" "app" {
   name_prefix   = "${var.project_name}-${var.environment}-lt-"
   image_id      = data.aws_ami.amazon_linux.id
   instance_type = var.instance_type
+  key_name      = var.key_name
 
   network_interfaces {
     associate_public_ip_address = true

@@ -1,0 +1,13 @@
+[Unit]
+Description=Flask App
+After=network.target
+
+[Service]
+User=appuser
+WorkingDirectory=/opt/app
+ExecStart=/usr/bin/python3 /opt/app/app.py
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
