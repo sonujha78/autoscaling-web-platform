@@ -1,0 +1,28 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.tfplan.*
+crash.log
+crash.*.log
+*.tfvars
+!*.tfvars.example
+.terraform.lock.hcl
+
+# Ansible
+*.retry
+vault_pass.txt
+
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+*.egg-info/
+
+# Logs / secrets
+*.log
+.env
+audit_logs/
