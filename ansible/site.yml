@@ -1,0 +1,13 @@
+---
+- name: Deploy application to app tier
+  hosts: app_dev
+  become: yes
+  gather_facts: yes
+
+  vars:
+    environment: dev
+
+  roles:
+    - app
+    - logrotate
+    - git_deploy

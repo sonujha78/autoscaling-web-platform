@@ -1,0 +1,23 @@
+---
+- name: Configure logrotate for app logs
+  copy:
+    dest: /etc/logrotate.d/app
+    content: |
+      /var/log/app/*.log {
+          daily
+          rotate 7
+          compress
+          delaycompress
+          missingok
+          notifempty
+          create 0640 appuser appuser
+      }
+    mode: '0644'
+
+- name: Ensure app log directory exists
+  file:
+    path: /var/log/app
+    state: directory
+    owner: appuser
+    group: appuser
+    mode: '0755'

@@ -1,0 +1,23 @@
+---
+- name: Install git
+  dnf:
+    name: git
+    state: present
+
+- name: Ensure app source directory exists
+  file:
+    path: /opt/app-src
+    state: directory
+    owner: appuser
+    group: appuser
+    mode: '0755'
+
+- name: Clone/pull application repo
+  git:
+    repo: "{{ app_git_repo }}"
+    dest: /opt/app-src
+    version: "{{ app_git_branch | default('main') }}"
+    force: yes
+  become_user: appuser
+  when: app_git_repo is defined and app_git_repo | length > 0
+  notify: restart app
