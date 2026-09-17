@@ -13,17 +13,17 @@ class DeploymentFailed(Exception):
     pass
 
 
-def run_ansible_configure(ansible_dir: str, private_key: str, ssh_user: str = "ec2-user") -> None:
+def run_ansible_configure(ansible_dir: str, private_key: str, ssh_user: str = "ec2-user",
+                          limit: str = None) -> None:
     """Run the site.yml playbook against the (green) instances via dynamic inventory."""
-    subprocess.run(
-        [
-            "ansible-playbook", "site.yml",
-            "--private-key", private_key,
-            "--user", ssh_user,
-        ],
-        cwd=ansible_dir,
-        check=True,
-    )
+    cmd = [
+        "ansible-playbook", "site.yml",
+        "--private-key", private_key,
+        "--user", ssh_user,
+    ]
+    if limit:
+        cmd.extend(["--limit", limit])
+    subprocess.run(cmd, cwd=ansible_dir, check=True)
 
 
 def run_blue_green_deploy(
@@ -34,6 +34,7 @@ def run_blue_green_deploy(
     private_key: str,
     alb_arn_suffix: str,
     audit: AuditLog,
+    green_limit: str = None,
     dry_run: bool = False,
 ) -> str:
     """
@@ -45,7 +46,7 @@ def run_blue_green_deploy(
     # provisioned by terraform apply, targeting green_tg_arn)
     try:
         if not dry_run:
-            run_ansible_configure(ansible_dir, private_key)
+            run_ansible_configure(ansible_dir, private_key, limit=green_limit)
         audit.log_stage("ansible_configure", "pass")
     except subprocess.CalledProcessError as e:
         audit.log_stage("ansible_configure", "fail", {"error": str(e)})

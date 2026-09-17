@@ -60,8 +60,9 @@ def validate(terraform_dir, var_file, force):
 @click.option("--alb-arn-suffix", required=True, help="ALB ARN suffix for CloudWatch dimension, e.g. app/name/id")
 @click.option("--ansible-dir", default="../ansible")
 @click.option("--private-key", required=True, help="Path to SSH private key for Ansible")
+@click.option("--green-limit", default="app_dev_green", help="Ansible inventory group/limit for green instances only")
 @click.option("--dry-run", is_flag=True, default=False, help="Run through stages without making real AWS/SSH calls")
-def deploy(listener_arn, blue_tg_arn, green_tg_arn, alb_arn_suffix, ansible_dir, private_key, dry_run):
+def deploy(listener_arn, blue_tg_arn, green_tg_arn, alb_arn_suffix, ansible_dir, private_key, green_limit, dry_run):
     """Run full blue-green deployment: configure green, health-check, shift traffic, monitor, auto-rollback."""
     if not all([listener_arn, blue_tg_arn, green_tg_arn]):
         click.secho("Missing listener/target-group ARNs. Pass --listener-arn/--blue-tg-arn/--green-tg-arn "
@@ -80,6 +81,7 @@ def deploy(listener_arn, blue_tg_arn, green_tg_arn, alb_arn_suffix, ansible_dir,
             private_key=private_key,
             alb_arn_suffix=alb_arn_suffix,
             audit=audit,
+            green_limit=green_limit,
             dry_run=dry_run,
         )
     except DeploymentFailed as e:

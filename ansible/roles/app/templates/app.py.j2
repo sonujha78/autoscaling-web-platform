@@ -1,14 +1,20 @@
 from flask import Flask, jsonify
-import socket
+import socket, random
 
 app = Flask(__name__)
 
+BROKEN_MODE = "{{ broken_app_mode | default('none') }}"
+
 @app.route("/health")
 def health():
+    if BROKEN_MODE == "health_fail":
+        return jsonify(status="error"), 500
     return jsonify(status="ok"), 200
 
 @app.route("/")
 def index():
+    if BROKEN_MODE == "traffic_fail" and random.random() < 0.5:
+        return jsonify(error="internal server error"), 500
     return jsonify(
         message="Hello from {{ ansible_hostname }}",
         hostname=socket.gethostname(),

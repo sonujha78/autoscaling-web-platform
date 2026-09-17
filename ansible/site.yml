@@ -1,6 +1,6 @@
 ---
 - name: Deploy application to app tier
-  hosts: app_dev
+  hosts: app_dev_blue:app_dev_green
   become: yes
   gather_facts: yes
 
