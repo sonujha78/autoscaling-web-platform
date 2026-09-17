@@ -12,7 +12,7 @@ def index():
     return jsonify(
         message="Hello from {{ ansible_hostname }}",
         hostname=socket.gethostname(),
-        environment="{{ environment | default('dev') }}"
+        environment="{{ env_name | default('dev') }}"
     ), 200
 
 if __name__ == "__main__":

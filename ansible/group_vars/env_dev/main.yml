@@ -1,0 +1,7 @@
+---
+env_name: dev
+app_port: 8080
+db_username: appadmin
+db_password: "{{ vault_db_password }}"
+app_git_repo: ""
+app_git_branch: main

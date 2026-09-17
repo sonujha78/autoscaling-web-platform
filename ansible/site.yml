@@ -5,7 +5,7 @@
   gather_facts: yes
 
   vars:
-    environment: dev
+    env_name: dev
 
   roles:
     - app
