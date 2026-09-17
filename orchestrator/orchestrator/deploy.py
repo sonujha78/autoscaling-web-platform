@@ -13,17 +13,18 @@ class DeploymentFailed(Exception):
     pass
 
 
-def run_ansible_configure(ansible_dir: str, private_key: str, ssh_user: str = "ec2-user",
-                          limit: str = None) -> None:
+def run_ansible_configure(ansible_dir: str, private_key: str, ssh_user: str = "ec2-user") -> None:
     """Run the site.yml playbook against the (green) instances via dynamic inventory."""
-    cmd = [
-        "ansible-playbook", "site.yml",
-        "--private-key", private_key,
-        "--user", ssh_user,
-    ]
-    if limit:
-        cmd.extend(["--limit", limit])
-    subprocess.run(cmd, cwd=ansible_dir, check=True)
+    subprocess.run(
+        [
+            "ansible-playbook", "site.yml",
+            "--private-key", private_key,
+            "--user", ssh_user,
+            "--limit", "app_dev_green",
+        ],
+        cwd=ansible_dir,
+        check=True,
+    )
 
 
 def run_blue_green_deploy(
@@ -34,26 +35,25 @@ def run_blue_green_deploy(
     private_key: str,
     alb_arn_suffix: str,
     audit: AuditLog,
-    green_limit: str = None,
     dry_run: bool = False,
+    skip_ansible: bool = False,
 ) -> str:
     """
     Full blue-green flow. Returns final status: 'success', 'rolled_back', or 'failed'.
-    Raises DeploymentFailed on unrecoverable errors before any traffic shift.
     """
 
-    # Stage 1: Configure green instances via Ansible (green ASG assumed already
-    # provisioned by terraform apply, targeting green_tg_arn)
-    try:
-        if not dry_run:
-            run_ansible_configure(ansible_dir, private_key, limit=green_limit)
-        audit.log_stage("ansible_configure", "pass")
-    except subprocess.CalledProcessError as e:
-        audit.log_stage("ansible_configure", "fail", {"error": str(e)})
-        audit.finalize("failed")
-        raise DeploymentFailed("Ansible configuration of green instances failed") from e
+    if skip_ansible:
+        audit.log_stage("ansible_configure", "skipped", {"reason": "skip_ansible=True"})
+    else:
+        try:
+            if not dry_run:
+                run_ansible_configure(ansible_dir, private_key)
+            audit.log_stage("ansible_configure", "pass")
+        except subprocess.CalledProcessError as e:
+            audit.log_stage("ansible_configure", "fail", {"error": str(e)})
+            audit.finalize("failed")
+            raise DeploymentFailed("Ansible configuration of green instances failed") from e
 
-    # Stage 2: Health check green directly, bypassing the ALB
     health_summary = wait_for_target_group_healthy(green_tg_arn)
     if not health_summary.all_healthy:
         audit.log_stage(
@@ -67,12 +67,10 @@ def run_blue_green_deploy(
         {"results": [r.__dict__ for r in health_summary.results]},
     )
 
-    # Stage 3: Shift traffic to green
     if not dry_run:
         shift_to_green(listener_arn, blue_tg_arn, green_tg_arn)
     audit.log_stage("traffic_shift_to_green", "pass", {"green_weight": 100, "blue_weight": 0})
 
-    # Stage 4: Bake period - monitor CloudWatch 5xx, auto-rollback if it spikes
     decision = monitor_bake_period(alb_arn_suffix)
     audit.log_stage(
         "bake_monitor", "fail" if decision.should_rollback else "pass",
