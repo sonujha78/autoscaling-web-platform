@@ -2,8 +2,12 @@ output "alb_dns_name" {
   value = module.loadbalancer.alb_dns_name
 }
 
-output "asg_name" {
-  value = module.compute.asg_name
+output "blue_asg_name" {
+  value = module.compute_blue.asg_name
+}
+
+output "green_asg_name" {
+  value = module.compute_green.asg_name
 }
 
 output "db_endpoint" {

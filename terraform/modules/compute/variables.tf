@@ -43,3 +43,9 @@ variable "key_name" {
   description = "EC2 key pair name for SSH access"
   type        = string
 }
+
+variable "slot" {
+  description = "Deployment slot identifier (blue/green)"
+  type        = string
+  default     = "blue"
+}

@@ -9,7 +9,7 @@ data "aws_ami" "amazon_linux" {
 }
 
 resource "aws_launch_template" "app" {
-  name_prefix   = "${var.project_name}-${var.environment}-lt-"
+  name_prefix   = "${var.project_name}-${var.environment}-${var.slot}-lt-"
   image_id      = data.aws_ami.amazon_linux.id
   instance_type = var.instance_type
   key_name      = var.key_name
@@ -22,11 +22,12 @@ resource "aws_launch_template" "app" {
   tag_specifications {
     resource_type = "instance"
     tags = {
-      Name        = "${var.project_name}-${var.environment}-app"
+      Name        = "${var.project_name}-${var.environment}-${var.slot}-app"
       Environment = var.environment
       Role        = "app"
+      Slot        = var.slot
       # Used by Ansible dynamic inventory to target these instances
-      AnsibleGroup = "app_${var.environment}"
+      AnsibleGroup = "app_${var.environment}_${var.slot}"
     }
   }
 
@@ -36,7 +37,7 @@ resource "aws_launch_template" "app" {
 }
 
 resource "aws_autoscaling_group" "app" {
-  name                = "${var.project_name}-${var.environment}-asg"
+  name                = "${var.project_name}-${var.environment}-${var.slot}-asg"
   min_size            = var.min_size
   max_size            = var.max_size
   desired_capacity    = var.desired_capacity
@@ -52,7 +53,7 @@ resource "aws_autoscaling_group" "app" {
 
   tag {
     key                 = "Name"
-    value               = "${var.project_name}-${var.environment}-app"
+    value               = "${var.project_name}-${var.environment}-${var.slot}-app"
     propagate_at_launch = true
   }
 
@@ -63,8 +64,14 @@ resource "aws_autoscaling_group" "app" {
   }
 
   tag {
+    key                 = "Slot"
+    value               = var.slot
+    propagate_at_launch = true
+  }
+
+  tag {
     key                 = "AnsibleGroup"
-    value               = "app_${var.environment}"
+    value               = "app_${var.environment}_${var.slot}"
     propagate_at_launch = true
   }
 
@@ -74,7 +81,7 @@ resource "aws_autoscaling_group" "app" {
 }
 
 resource "aws_autoscaling_policy" "scale_up" {
-  name                   = "${var.project_name}-${var.environment}-scale-up"
+  name                   = "${var.project_name}-${var.environment}-${var.slot}-scale-up"
   autoscaling_group_name = aws_autoscaling_group.app.name
   policy_type            = "TargetTrackingScaling"
 
