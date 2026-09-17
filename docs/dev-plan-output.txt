@@ -1,0 +1,85 @@
+[33m╷[0m[0m
+[33m│[0m [0m[1m[33mWarning: [0m[0m[1mDeprecated Parameter[0m
+[33m│[0m [0m
+[33m│[0m [0m[0mThe parameter "dynamodb_table" is deprecated. Use parameter "use_lockfile"
+[33m│[0m [0minstead.
+[33m╵[0m[0m
+Acquiring state lock. This may take a few moments...
+[0m[1mmodule.compute_blue.data.aws_ami.amazon_linux: Reading...[0m[0m
+[0m[1mmodule.compute_green.data.aws_ami.amazon_linux: Reading...[0m[0m
+[0m[1mmodule.networking.aws_vpc.main: Refreshing state... [id=vpc-03eedb56e652f1a83][0m
+[0m[1mmodule.compute_blue.data.aws_ami.amazon_linux: Read complete after 2s [id=ami-000ee252d8e6343be][0m
+[0m[1mmodule.compute_green.data.aws_ami.amazon_linux: Read complete after 2s [id=ami-000ee252d8e6343be][0m
+[0m[1mmodule.networking.aws_internet_gateway.main: Refreshing state... [id=igw-059ccd62c5615cb1d][0m
+[0m[1mmodule.networking.aws_subnet.public[0]: Refreshing state... [id=subnet-0d5fdc2b20c7706f1][0m
+[0m[1mmodule.networking.aws_subnet.public[1]: Refreshing state... [id=subnet-0149f3d2acaad1f4d][0m
+[0m[1mmodule.networking.aws_security_group.alb: Refreshing state... [id=sg-0baaa6ef196f1768d][0m
+[0m[1mmodule.loadbalancer.aws_lb_target_group.green: Refreshing state... [id=arn:aws:elasticloadbalancing:ap-south-1:576003025159:targetgroup/asp-dev-tg-green/7ac81be7c6d0b98b][0m
+[0m[1mmodule.loadbalancer.aws_lb_target_group.blue: Refreshing state... [id=arn:aws:elasticloadbalancing:ap-south-1:576003025159:targetgroup/asp-dev-tg-blue/0dfd242af231be35][0m
+[0m[1mmodule.networking.aws_route_table.public: Refreshing state... [id=rtb-0457f411985677cf4][0m
+[0m[1mmodule.database.aws_db_subnet_group.main: Refreshing state... [id=autoscaling-platform-dev-db-subnet-group][0m
+[0m[1mmodule.networking.aws_security_group.app: Refreshing state... [id=sg-0e6087fcf53379cd4][0m
+[0m[1mmodule.loadbalancer.aws_lb.main: Refreshing state... [id=arn:aws:elasticloadbalancing:ap-south-1:576003025159:loadbalancer/app/autoscaling-platform-dev-alb/b59ba213a109da6c][0m
+[0m[1mmodule.networking.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-05f04231a2e82843d][0m
+[0m[1mmodule.networking.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0b86f104be32d96e4][0m
+[0m[1mmodule.networking.aws_security_group.db: Refreshing state... [id=sg-09d93a361385871ba][0m
+[0m[1mmodule.compute_blue.aws_launch_template.app: Refreshing state... [id=lt-0603c1b3d605d0394][0m
+[0m[1mmodule.compute_green.aws_launch_template.app: Refreshing state... [id=lt-0af05c3a7035b7142][0m
+[0m[1mmodule.compute_blue.aws_autoscaling_group.app: Refreshing state... [id=autoscaling-platform-dev-blue-asg][0m
+[0m[1mmodule.compute_green.aws_autoscaling_group.app: Refreshing state... [id=autoscaling-platform-dev-green-asg][0m
+[0m[1mmodule.loadbalancer.aws_lb_listener.http: Refreshing state... [id=arn:aws:elasticloadbalancing:ap-south-1:576003025159:listener/app/autoscaling-platform-dev-alb/b59ba213a109da6c/175da71da3246bed][0m
+[0m[1mmodule.database.aws_db_instance.main: Refreshing state... [id=db-4AG3BK7AIVIXXPDUROYM7CSM2U][0m
+[0m[1mmodule.compute_green.aws_autoscaling_policy.scale_up: Refreshing state... [id=autoscaling-platform-dev-green-scale-up][0m
+[0m[1mmodule.compute_blue.aws_autoscaling_policy.scale_up: Refreshing state... [id=autoscaling-platform-dev-blue-scale-up][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [33m~[0m update in-place[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.compute_green.aws_autoscaling_group.app[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_autoscaling_group" "app" {
+        id                               = "autoscaling-platform-dev-green-asg"
+        name                             = "autoscaling-platform-dev-green-asg"
+      [33m~[0m[0m suspended_processes              = [
+          [31m-[0m[0m "ReplaceUnhealthy",
+        ]
+        [90m# (30 unchanged attributes hidden)[0m[0m
+
+        [90m# (8 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.networking.aws_security_group.app[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_security_group" "app" {
+        id                     = "sg-0e6087fcf53379cd4"
+      [33m~[0m[0m ingress                = [
+          [31m-[0m[0m {
+              [31m-[0m[0m cidr_blocks      = [
+                  [31m-[0m[0m "106.219.226.71/32",
+                ]
+              [31m-[0m[0m description      = "Orchestrator direct health check - dev only, from laptop"
+              [31m-[0m[0m from_port        = 8080
+              [31m-[0m[0m ipv6_cidr_blocks = []
+              [31m-[0m[0m prefix_list_ids  = []
+              [31m-[0m[0m protocol         = "tcp"
+              [31m-[0m[0m security_groups  = []
+              [31m-[0m[0m self             = false
+              [31m-[0m[0m to_port          = 8080
+            },
+            [90m# (2 unchanged elements hidden)[0m[0m
+        ]
+        name                   = "autoscaling-platform-dev-app-sg"
+        tags                   = {
+            "Environment" = "dev"
+            "Name"        = "autoscaling-platform-dev-app-sg"
+        }
+        [90m# (8 unchanged attributes hidden)[0m[0m
+    }
+
+[1mPlan:[0m [0m0 to add, 2 to change, 0 to destroy.
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.

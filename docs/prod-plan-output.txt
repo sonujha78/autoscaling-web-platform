@@ -1,0 +1,846 @@
+[33m╷[0m[0m
+[33m│[0m [0m[1m[33mWarning: [0m[0m[1mDeprecated Parameter[0m
+[33m│[0m [0m
+[33m│[0m [0m[0mThe parameter "dynamodb_table" is deprecated. Use parameter "use_lockfile"
+[33m│[0m [0minstead.
+[33m╵[0m[0m
+Acquiring state lock. This may take a few moments...
+[0m[1mmodule.compute_green.data.aws_ami.amazon_linux: Reading...[0m[0m
+[0m[1mmodule.compute_blue.data.aws_ami.amazon_linux: Reading...[0m[0m
+[0m[1mmodule.compute_green.data.aws_ami.amazon_linux: Read complete after 3s [id=ami-000ee252d8e6343be][0m
+[0m[1mmodule.compute_blue.data.aws_ami.amazon_linux: Read complete after 3s [id=ami-000ee252d8e6343be][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [32m+[0m create[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.compute_blue.aws_autoscaling_group.app[0m will be created
+[0m  [32m+[0m[0m resource "aws_autoscaling_group" "app" {
+      [32m+[0m[0m arn                              = (known after apply)
+      [32m+[0m[0m availability_zones               = (known after apply)
+      [32m+[0m[0m default_cooldown                 = (known after apply)
+      [32m+[0m[0m desired_capacity                 = 2
+      [32m+[0m[0m force_delete                     = false
+      [32m+[0m[0m force_delete_warm_pool           = false
+      [32m+[0m[0m health_check_grace_period        = 120
+      [32m+[0m[0m health_check_type                = "ELB"
+      [32m+[0m[0m id                               = (known after apply)
+      [32m+[0m[0m ignore_failed_scaling_activities = false
+      [32m+[0m[0m load_balancers                   = (known after apply)
+      [32m+[0m[0m max_size                         = 4
+      [32m+[0m[0m metrics_granularity              = "1Minute"
+      [32m+[0m[0m min_size                         = 2
+      [32m+[0m[0m name                             = "autoscaling-platform-prod-blue-asg"
+      [32m+[0m[0m name_prefix                      = (known after apply)
+      [32m+[0m[0m predicted_capacity               = (known after apply)
+      [32m+[0m[0m protect_from_scale_in            = false
+      [32m+[0m[0m service_linked_role_arn          = (known after apply)
+      [32m+[0m[0m target_group_arns                = (known after apply)
+      [32m+[0m[0m vpc_zone_identifier              = (known after apply)
+      [32m+[0m[0m wait_for_capacity_timeout        = "10m"
+      [32m+[0m[0m warm_pool_size                   = (known after apply)
+
+      [32m+[0m[0m availability_zone_distribution (known after apply)
+
+      [32m+[0m[0m capacity_reservation_specification (known after apply)
+
+      [32m+[0m[0m launch_template {
+          [32m+[0m[0m id      = (known after apply)
+          [32m+[0m[0m name    = (known after apply)
+          [32m+[0m[0m version = "$Latest"
+        }
+
+      [32m+[0m[0m mixed_instances_policy (known after apply)
+
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "AnsibleGroup"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "app_prod_blue"
+        }
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "Environment"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "prod"
+        }
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "Name"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "autoscaling-platform-prod-blue-app"
+        }
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "Slot"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "blue"
+        }
+
+      [32m+[0m[0m traffic_source (known after apply)
+    }
+
+[1m  # module.compute_blue.aws_autoscaling_policy.scale_up[0m will be created
+[0m  [32m+[0m[0m resource "aws_autoscaling_policy" "scale_up" {
+      [32m+[0m[0m arn                     = (known after apply)
+      [32m+[0m[0m autoscaling_group_name  = "autoscaling-platform-prod-blue-asg"
+      [32m+[0m[0m enabled                 = true
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m metric_aggregation_type = (known after apply)
+      [32m+[0m[0m name                    = "autoscaling-platform-prod-blue-scale-up"
+      [32m+[0m[0m policy_type             = "TargetTrackingScaling"
+
+      [32m+[0m[0m target_tracking_configuration {
+          [32m+[0m[0m disable_scale_in = false
+          [32m+[0m[0m target_value     = 60
+
+          [32m+[0m[0m predefined_metric_specification {
+              [32m+[0m[0m predefined_metric_type = "ASGAverageCPUUtilization"
+            }
+        }
+    }
+
+[1m  # module.compute_blue.aws_launch_template.app[0m will be created
+[0m  [32m+[0m[0m resource "aws_launch_template" "app" {
+      [32m+[0m[0m arn             = (known after apply)
+      [32m+[0m[0m default_version = (known after apply)
+      [32m+[0m[0m id              = (known after apply)
+      [32m+[0m[0m image_id        = "ami-000ee252d8e6343be"
+      [32m+[0m[0m instance_type   = "t3.micro"
+      [32m+[0m[0m key_name        = "autoscaling-platform-dev-key"
+      [32m+[0m[0m latest_version  = (known after apply)
+      [32m+[0m[0m name            = (known after apply)
+      [32m+[0m[0m name_prefix     = "autoscaling-platform-prod-blue-lt-"
+      [32m+[0m[0m tags_all        = (known after apply)
+
+      [32m+[0m[0m metadata_options (known after apply)
+
+      [32m+[0m[0m network_interfaces {
+          [32m+[0m[0m associate_public_ip_address = "true"
+          [32m+[0m[0m security_groups             = (known after apply)
+        }
+
+      [32m+[0m[0m tag_specifications {
+          [32m+[0m[0m resource_type = "instance"
+          [32m+[0m[0m tags          = {
+              [32m+[0m[0m "AnsibleGroup" = "app_prod_blue"
+              [32m+[0m[0m "Environment"  = "prod"
+              [32m+[0m[0m "Name"         = "autoscaling-platform-prod-blue-app"
+              [32m+[0m[0m "Role"         = "app"
+              [32m+[0m[0m "Slot"         = "blue"
+            }
+        }
+    }
+
+[1m  # module.compute_green.aws_autoscaling_group.app[0m will be created
+[0m  [32m+[0m[0m resource "aws_autoscaling_group" "app" {
+      [32m+[0m[0m arn                              = (known after apply)
+      [32m+[0m[0m availability_zones               = (known after apply)
+      [32m+[0m[0m default_cooldown                 = (known after apply)
+      [32m+[0m[0m desired_capacity                 = 2
+      [32m+[0m[0m force_delete                     = false
+      [32m+[0m[0m force_delete_warm_pool           = false
+      [32m+[0m[0m health_check_grace_period        = 120
+      [32m+[0m[0m health_check_type                = "ELB"
+      [32m+[0m[0m id                               = (known after apply)
+      [32m+[0m[0m ignore_failed_scaling_activities = false
+      [32m+[0m[0m load_balancers                   = (known after apply)
+      [32m+[0m[0m max_size                         = 4
+      [32m+[0m[0m metrics_granularity              = "1Minute"
+      [32m+[0m[0m min_size                         = 2
+      [32m+[0m[0m name                             = "autoscaling-platform-prod-green-asg"
+      [32m+[0m[0m name_prefix                      = (known after apply)
+      [32m+[0m[0m predicted_capacity               = (known after apply)
+      [32m+[0m[0m protect_from_scale_in            = false
+      [32m+[0m[0m service_linked_role_arn          = (known after apply)
+      [32m+[0m[0m target_group_arns                = (known after apply)
+      [32m+[0m[0m vpc_zone_identifier              = (known after apply)
+      [32m+[0m[0m wait_for_capacity_timeout        = "10m"
+      [32m+[0m[0m warm_pool_size                   = (known after apply)
+
+      [32m+[0m[0m availability_zone_distribution (known after apply)
+
+      [32m+[0m[0m capacity_reservation_specification (known after apply)
+
+      [32m+[0m[0m launch_template {
+          [32m+[0m[0m id      = (known after apply)
+          [32m+[0m[0m name    = (known after apply)
+          [32m+[0m[0m version = "$Latest"
+        }
+
+      [32m+[0m[0m mixed_instances_policy (known after apply)
+
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "AnsibleGroup"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "app_prod_green"
+        }
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "Environment"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "prod"
+        }
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "Name"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "autoscaling-platform-prod-green-app"
+        }
+      [32m+[0m[0m tag {
+          [32m+[0m[0m key                 = "Slot"
+          [32m+[0m[0m propagate_at_launch = true
+          [32m+[0m[0m value               = "green"
+        }
+
+      [32m+[0m[0m traffic_source (known after apply)
+    }
+
+[1m  # module.compute_green.aws_autoscaling_policy.scale_up[0m will be created
+[0m  [32m+[0m[0m resource "aws_autoscaling_policy" "scale_up" {
+      [32m+[0m[0m arn                     = (known after apply)
+      [32m+[0m[0m autoscaling_group_name  = "autoscaling-platform-prod-green-asg"
+      [32m+[0m[0m enabled                 = true
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m metric_aggregation_type = (known after apply)
+      [32m+[0m[0m name                    = "autoscaling-platform-prod-green-scale-up"
+      [32m+[0m[0m policy_type             = "TargetTrackingScaling"
+
+      [32m+[0m[0m target_tracking_configuration {
+          [32m+[0m[0m disable_scale_in = false
+          [32m+[0m[0m target_value     = 60
+
+          [32m+[0m[0m predefined_metric_specification {
+              [32m+[0m[0m predefined_metric_type = "ASGAverageCPUUtilization"
+            }
+        }
+    }
+
+[1m  # module.compute_green.aws_launch_template.app[0m will be created
+[0m  [32m+[0m[0m resource "aws_launch_template" "app" {
+      [32m+[0m[0m arn             = (known after apply)
+      [32m+[0m[0m default_version = (known after apply)
+      [32m+[0m[0m id              = (known after apply)
+      [32m+[0m[0m image_id        = "ami-000ee252d8e6343be"
+      [32m+[0m[0m instance_type   = "t3.micro"
+      [32m+[0m[0m key_name        = "autoscaling-platform-dev-key"
+      [32m+[0m[0m latest_version  = (known after apply)
+      [32m+[0m[0m name            = (known after apply)
+      [32m+[0m[0m name_prefix     = "autoscaling-platform-prod-green-lt-"
+      [32m+[0m[0m tags_all        = (known after apply)
+
+      [32m+[0m[0m metadata_options (known after apply)
+
+      [32m+[0m[0m network_interfaces {
+          [32m+[0m[0m associate_public_ip_address = "true"
+          [32m+[0m[0m security_groups             = (known after apply)
+        }
+
+      [32m+[0m[0m tag_specifications {
+          [32m+[0m[0m resource_type = "instance"
+          [32m+[0m[0m tags          = {
+              [32m+[0m[0m "AnsibleGroup" = "app_prod_green"
+              [32m+[0m[0m "Environment"  = "prod"
+              [32m+[0m[0m "Name"         = "autoscaling-platform-prod-green-app"
+              [32m+[0m[0m "Role"         = "app"
+              [32m+[0m[0m "Slot"         = "green"
+            }
+        }
+    }
+
+[1m  # module.database.aws_db_instance.main[0m will be created
+[0m  [32m+[0m[0m resource "aws_db_instance" "main" {
+      [32m+[0m[0m address                               = (known after apply)
+      [32m+[0m[0m allocated_storage                     = 20
+      [32m+[0m[0m apply_immediately                     = false
+      [32m+[0m[0m arn                                   = (known after apply)
+      [32m+[0m[0m auto_minor_version_upgrade            = true
+      [32m+[0m[0m availability_zone                     = (known after apply)
+      [32m+[0m[0m backup_retention_period               = 1
+      [32m+[0m[0m backup_target                         = (known after apply)
+      [32m+[0m[0m backup_window                         = (known after apply)
+      [32m+[0m[0m ca_cert_identifier                    = (known after apply)
+      [32m+[0m[0m character_set_name                    = (known after apply)
+      [32m+[0m[0m copy_tags_to_snapshot                 = false
+      [32m+[0m[0m database_insights_mode                = (known after apply)
+      [32m+[0m[0m db_name                               = "appdb"
+      [32m+[0m[0m db_subnet_group_name                  = "autoscaling-platform-prod-db-subnet-group"
+      [32m+[0m[0m dedicated_log_volume                  = false
+      [32m+[0m[0m delete_automated_backups              = true
+      [32m+[0m[0m domain_fqdn                           = (known after apply)
+      [32m+[0m[0m endpoint                              = (known after apply)
+      [32m+[0m[0m engine                                = "postgres"
+      [32m+[0m[0m engine_lifecycle_support              = (known after apply)
+      [32m+[0m[0m engine_version                        = "16.15"
+      [32m+[0m[0m engine_version_actual                 = (known after apply)
+      [32m+[0m[0m hosted_zone_id                        = (known after apply)
+      [32m+[0m[0m id                                    = (known after apply)
+      [32m+[0m[0m identifier                            = "autoscaling-platform-prod-db"
+      [32m+[0m[0m identifier_prefix                     = (known after apply)
+      [32m+[0m[0m instance_class                        = "db.t3.micro"
+      [32m+[0m[0m iops                                  = (known after apply)
+      [32m+[0m[0m kms_key_id                            = (known after apply)
+      [32m+[0m[0m latest_restorable_time                = (known after apply)
+      [32m+[0m[0m license_model                         = (known after apply)
+      [32m+[0m[0m listener_endpoint                     = (known after apply)
+      [32m+[0m[0m maintenance_window                    = (known after apply)
+      [32m+[0m[0m master_user_secret                    = (known after apply)
+      [32m+[0m[0m master_user_secret_kms_key_id         = (known after apply)
+      [32m+[0m[0m monitoring_interval                   = 0
+      [32m+[0m[0m monitoring_role_arn                   = (known after apply)
+      [32m+[0m[0m multi_az                              = false
+      [32m+[0m[0m nchar_character_set_name              = (known after apply)
+      [32m+[0m[0m network_type                          = (known after apply)
+      [32m+[0m[0m option_group_name                     = (known after apply)
+      [32m+[0m[0m parameter_group_name                  = (known after apply)
+      [32m+[0m[0m password                              = (sensitive value)
+      [32m+[0m[0m password_wo                           = (write-only attribute)
+      [32m+[0m[0m performance_insights_enabled          = false
+      [32m+[0m[0m performance_insights_kms_key_id       = (known after apply)
+      [32m+[0m[0m performance_insights_retention_period = (known after apply)
+      [32m+[0m[0m port                                  = (known after apply)
+      [32m+[0m[0m publicly_accessible                   = false
+      [32m+[0m[0m replica_mode                          = (known after apply)
+      [32m+[0m[0m replicas                              = (known after apply)
+      [32m+[0m[0m resource_id                           = (known after apply)
+      [32m+[0m[0m skip_final_snapshot                   = true
+      [32m+[0m[0m snapshot_identifier                   = (known after apply)
+      [32m+[0m[0m status                                = (known after apply)
+      [32m+[0m[0m storage_throughput                    = (known after apply)
+      [32m+[0m[0m storage_type                          = "gp2"
+      [32m+[0m[0m tags                                  = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-db"
+        }
+      [32m+[0m[0m tags_all                              = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-db"
+        }
+      [32m+[0m[0m timezone                              = (known after apply)
+      [32m+[0m[0m username                              = (sensitive value)
+      [32m+[0m[0m vpc_security_group_ids                = (known after apply)
+    }
+
+[1m  # module.database.aws_db_subnet_group.main[0m will be created
+[0m  [32m+[0m[0m resource "aws_db_subnet_group" "main" {
+      [32m+[0m[0m arn                     = (known after apply)
+      [32m+[0m[0m description             = "Managed by Terraform"
+      [32m+[0m[0m id                      = (known after apply)
+      [32m+[0m[0m name                    = "autoscaling-platform-prod-db-subnet-group"
+      [32m+[0m[0m name_prefix             = (known after apply)
+      [32m+[0m[0m subnet_ids              = (known after apply)
+      [32m+[0m[0m supported_network_types = (known after apply)
+      [32m+[0m[0m tags                    = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-db-subnet-group"
+        }
+      [32m+[0m[0m tags_all                = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-db-subnet-group"
+        }
+      [32m+[0m[0m vpc_id                  = (known after apply)
+    }
+
+[1m  # module.loadbalancer.aws_lb.main[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb" "main" {
+      [32m+[0m[0m arn                                                          = (known after apply)
+      [32m+[0m[0m arn_suffix                                                   = (known after apply)
+      [32m+[0m[0m client_keep_alive                                            = 3600
+      [32m+[0m[0m desync_mitigation_mode                                       = "defensive"
+      [32m+[0m[0m dns_name                                                     = (known after apply)
+      [32m+[0m[0m drop_invalid_header_fields                                   = false
+      [32m+[0m[0m enable_deletion_protection                                   = false
+      [32m+[0m[0m enable_http2                                                 = true
+      [32m+[0m[0m enable_tls_version_and_cipher_suite_headers                  = false
+      [32m+[0m[0m enable_waf_fail_open                                         = false
+      [32m+[0m[0m enable_xff_client_port                                       = false
+      [32m+[0m[0m enable_zonal_shift                                           = false
+      [32m+[0m[0m enforce_security_group_inbound_rules_on_private_link_traffic = (known after apply)
+      [32m+[0m[0m id                                                           = (known after apply)
+      [32m+[0m[0m idle_timeout                                                 = 60
+      [32m+[0m[0m internal                                                     = false
+      [32m+[0m[0m ip_address_type                                              = (known after apply)
+      [32m+[0m[0m load_balancer_type                                           = "application"
+      [32m+[0m[0m name                                                         = "autoscaling-platform-prod-alb"
+      [32m+[0m[0m name_prefix                                                  = (known after apply)
+      [32m+[0m[0m preserve_host_header                                         = false
+      [32m+[0m[0m security_groups                                              = (known after apply)
+      [32m+[0m[0m subnets                                                      = (known after apply)
+      [32m+[0m[0m tags                                                         = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-alb"
+        }
+      [32m+[0m[0m tags_all                                                     = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-alb"
+        }
+      [32m+[0m[0m vpc_id                                                       = (known after apply)
+      [32m+[0m[0m xff_header_processing_mode                                   = "append"
+      [32m+[0m[0m zone_id                                                      = (known after apply)
+
+      [32m+[0m[0m subnet_mapping (known after apply)
+    }
+
+[1m  # module.loadbalancer.aws_lb_listener.http[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb_listener" "http" {
+      [32m+[0m[0m arn                                                                   = (known after apply)
+      [32m+[0m[0m id                                                                    = (known after apply)
+      [32m+[0m[0m load_balancer_arn                                                     = (known after apply)
+      [32m+[0m[0m port                                                                  = 80
+      [32m+[0m[0m protocol                                                              = "HTTP"
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_header_name               = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_issuer_header_name        = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_leaf_header_name          = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_subject_header_name       = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_mtls_clientcert_validity_header_name      = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_tls_cipher_suite_header_name              = (known after apply)
+      [32m+[0m[0m routing_http_request_x_amzn_tls_version_header_name                   = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_credentials_header_value   = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_headers_header_value       = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_methods_header_value       = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_allow_origin_header_value        = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_expose_headers_header_value      = (known after apply)
+      [32m+[0m[0m routing_http_response_access_control_max_age_header_value             = (known after apply)
+      [32m+[0m[0m routing_http_response_content_security_policy_header_value            = (known after apply)
+      [32m+[0m[0m routing_http_response_server_enabled                                  = (known after apply)
+      [32m+[0m[0m routing_http_response_strict_transport_security_header_value          = (known after apply)
+      [32m+[0m[0m routing_http_response_x_content_type_options_header_value             = (known after apply)
+      [32m+[0m[0m routing_http_response_x_frame_options_header_value                    = (known after apply)
+      [32m+[0m[0m ssl_policy                                                            = (known after apply)
+      [32m+[0m[0m tags_all                                                              = (known after apply)
+      [32m+[0m[0m tcp_idle_timeout_seconds                                              = (known after apply)
+
+      [32m+[0m[0m default_action {
+          [32m+[0m[0m order = (known after apply)
+          [32m+[0m[0m type  = "forward"
+
+          [32m+[0m[0m forward {
+              [32m+[0m[0m target_group {
+                  [32m+[0m[0m arn    = (known after apply)
+                  [32m+[0m[0m weight = 0
+                }
+              [32m+[0m[0m target_group {
+                  [32m+[0m[0m arn    = (known after apply)
+                  [32m+[0m[0m weight = 100
+                }
+            }
+        }
+
+      [32m+[0m[0m mutual_authentication (known after apply)
+    }
+
+[1m  # module.loadbalancer.aws_lb_target_group.blue[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb_target_group" "blue" {
+      [32m+[0m[0m arn                                = (known after apply)
+      [32m+[0m[0m arn_suffix                         = (known after apply)
+      [32m+[0m[0m connection_termination             = (known after apply)
+      [32m+[0m[0m deregistration_delay               = "300"
+      [32m+[0m[0m id                                 = (known after apply)
+      [32m+[0m[0m ip_address_type                    = (known after apply)
+      [32m+[0m[0m lambda_multi_value_headers_enabled = false
+      [32m+[0m[0m load_balancer_arns                 = (known after apply)
+      [32m+[0m[0m load_balancing_algorithm_type      = (known after apply)
+      [32m+[0m[0m load_balancing_anomaly_mitigation  = (known after apply)
+      [32m+[0m[0m load_balancing_cross_zone_enabled  = (known after apply)
+      [32m+[0m[0m name                               = "asp-prod-tg-blue"
+      [32m+[0m[0m name_prefix                        = (known after apply)
+      [32m+[0m[0m port                               = 8080
+      [32m+[0m[0m preserve_client_ip                 = (known after apply)
+      [32m+[0m[0m protocol                           = "HTTP"
+      [32m+[0m[0m protocol_version                   = (known after apply)
+      [32m+[0m[0m proxy_protocol_v2                  = false
+      [32m+[0m[0m slow_start                         = 0
+      [32m+[0m[0m tags                               = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-tg-blue"
+          [32m+[0m[0m "Slot"        = "blue"
+        }
+      [32m+[0m[0m tags_all                           = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-tg-blue"
+          [32m+[0m[0m "Slot"        = "blue"
+        }
+      [32m+[0m[0m target_type                        = "instance"
+      [32m+[0m[0m vpc_id                             = (known after apply)
+
+      [32m+[0m[0m health_check {
+          [32m+[0m[0m enabled             = true
+          [32m+[0m[0m healthy_threshold   = 2
+          [32m+[0m[0m interval            = 15
+          [32m+[0m[0m matcher             = "200"
+          [32m+[0m[0m path                = "/health"
+          [32m+[0m[0m port                = "traffic-port"
+          [32m+[0m[0m protocol            = "HTTP"
+          [32m+[0m[0m timeout             = 5
+          [32m+[0m[0m unhealthy_threshold = 3
+        }
+
+      [32m+[0m[0m stickiness (known after apply)
+
+      [32m+[0m[0m target_failover (known after apply)
+
+      [32m+[0m[0m target_group_health (known after apply)
+
+      [32m+[0m[0m target_health_state (known after apply)
+    }
+
+[1m  # module.loadbalancer.aws_lb_target_group.green[0m will be created
+[0m  [32m+[0m[0m resource "aws_lb_target_group" "green" {
+      [32m+[0m[0m arn                                = (known after apply)
+      [32m+[0m[0m arn_suffix                         = (known after apply)
+      [32m+[0m[0m connection_termination             = (known after apply)
+      [32m+[0m[0m deregistration_delay               = "300"
+      [32m+[0m[0m id                                 = (known after apply)
+      [32m+[0m[0m ip_address_type                    = (known after apply)
+      [32m+[0m[0m lambda_multi_value_headers_enabled = false
+      [32m+[0m[0m load_balancer_arns                 = (known after apply)
+      [32m+[0m[0m load_balancing_algorithm_type      = (known after apply)
+      [32m+[0m[0m load_balancing_anomaly_mitigation  = (known after apply)
+      [32m+[0m[0m load_balancing_cross_zone_enabled  = (known after apply)
+      [32m+[0m[0m name                               = "asp-prod-tg-green"
+      [32m+[0m[0m name_prefix                        = (known after apply)
+      [32m+[0m[0m port                               = 8080
+      [32m+[0m[0m preserve_client_ip                 = (known after apply)
+      [32m+[0m[0m protocol                           = "HTTP"
+      [32m+[0m[0m protocol_version                   = (known after apply)
+      [32m+[0m[0m proxy_protocol_v2                  = false
+      [32m+[0m[0m slow_start                         = 0
+      [32m+[0m[0m tags                               = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-tg-green"
+          [32m+[0m[0m "Slot"        = "green"
+        }
+      [32m+[0m[0m tags_all                           = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-tg-green"
+          [32m+[0m[0m "Slot"        = "green"
+        }
+      [32m+[0m[0m target_type                        = "instance"
+      [32m+[0m[0m vpc_id                             = (known after apply)
+
+      [32m+[0m[0m health_check {
+          [32m+[0m[0m enabled             = true
+          [32m+[0m[0m healthy_threshold   = 2
+          [32m+[0m[0m interval            = 15
+          [32m+[0m[0m matcher             = "200"
+          [32m+[0m[0m path                = "/health"
+          [32m+[0m[0m port                = "traffic-port"
+          [32m+[0m[0m protocol            = "HTTP"
+          [32m+[0m[0m timeout             = 5
+          [32m+[0m[0m unhealthy_threshold = 3
+        }
+
+      [32m+[0m[0m stickiness (known after apply)
+
+      [32m+[0m[0m target_failover (known after apply)
+
+      [32m+[0m[0m target_group_health (known after apply)
+
+      [32m+[0m[0m target_health_state (known after apply)
+    }
+
+[1m  # module.networking.aws_internet_gateway.main[0m will be created
+[0m  [32m+[0m[0m resource "aws_internet_gateway" "main" {
+      [32m+[0m[0m arn      = (known after apply)
+      [32m+[0m[0m id       = (known after apply)
+      [32m+[0m[0m owner_id = (known after apply)
+      [32m+[0m[0m tags     = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-igw"
+        }
+      [32m+[0m[0m tags_all = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-igw"
+        }
+      [32m+[0m[0m vpc_id   = (known after apply)
+    }
+
+[1m  # module.networking.aws_route_table.public[0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table" "public" {
+      [32m+[0m[0m arn              = (known after apply)
+      [32m+[0m[0m id               = (known after apply)
+      [32m+[0m[0m owner_id         = (known after apply)
+      [32m+[0m[0m propagating_vgws = (known after apply)
+      [32m+[0m[0m route            = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_block                 = "0.0.0.0/0"
+              [32m+[0m[0m gateway_id                 = (known after apply)
+                [90m# (11 unchanged attributes hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m tags             = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-public-rt"
+        }
+      [32m+[0m[0m tags_all         = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-public-rt"
+        }
+      [32m+[0m[0m vpc_id           = (known after apply)
+    }
+
+[1m  # module.networking.aws_route_table_association.public[0][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table_association" "public" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m route_table_id = (known after apply)
+      [32m+[0m[0m subnet_id      = (known after apply)
+    }
+
+[1m  # module.networking.aws_route_table_association.public[1][0m will be created
+[0m  [32m+[0m[0m resource "aws_route_table_association" "public" {
+      [32m+[0m[0m id             = (known after apply)
+      [32m+[0m[0m route_table_id = (known after apply)
+      [32m+[0m[0m subnet_id      = (known after apply)
+    }
+
+[1m  # module.networking.aws_security_group.alb[0m will be created
+[0m  [32m+[0m[0m resource "aws_security_group" "alb" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m description            = "Allow HTTP/HTTPS inbound to ALB"
+      [32m+[0m[0m egress                 = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m from_port        = 0
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "-1"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 0
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m ingress                = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m description      = "HTTP"
+              [32m+[0m[0m from_port        = 80
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 80
+            },
+        ]
+      [32m+[0m[0m name                   = "autoscaling-platform-prod-alb-sg"
+      [32m+[0m[0m name_prefix            = (known after apply)
+      [32m+[0m[0m owner_id               = (known after apply)
+      [32m+[0m[0m revoke_rules_on_delete = false
+      [32m+[0m[0m tags                   = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-alb-sg"
+        }
+      [32m+[0m[0m tags_all               = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-alb-sg"
+        }
+      [32m+[0m[0m vpc_id                 = (known after apply)
+    }
+
+[1m  # module.networking.aws_security_group.app[0m will be created
+[0m  [32m+[0m[0m resource "aws_security_group" "app" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m description            = "Allow traffic from ALB and SSH"
+      [32m+[0m[0m egress                 = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m from_port        = 0
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "-1"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 0
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m ingress                = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m description      = "SSH (restrict this to your IP in production)"
+              [32m+[0m[0m from_port        = 22
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 22
+            },
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = []
+              [32m+[0m[0m description      = "App traffic from ALB"
+              [32m+[0m[0m from_port        = 8080
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = (known after apply)
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 8080
+            },
+        ]
+      [32m+[0m[0m name                   = "autoscaling-platform-prod-app-sg"
+      [32m+[0m[0m name_prefix            = (known after apply)
+      [32m+[0m[0m owner_id               = (known after apply)
+      [32m+[0m[0m revoke_rules_on_delete = false
+      [32m+[0m[0m tags                   = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-app-sg"
+        }
+      [32m+[0m[0m tags_all               = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-app-sg"
+        }
+      [32m+[0m[0m vpc_id                 = (known after apply)
+    }
+
+[1m  # module.networking.aws_security_group.db[0m will be created
+[0m  [32m+[0m[0m resource "aws_security_group" "db" {
+      [32m+[0m[0m arn                    = (known after apply)
+      [32m+[0m[0m description            = "Allow Postgres traffic only from app tier"
+      [32m+[0m[0m egress                 = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = [
+                  [32m+[0m[0m "0.0.0.0/0",
+                ]
+              [32m+[0m[0m from_port        = 0
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "-1"
+              [32m+[0m[0m security_groups  = []
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 0
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            },
+        ]
+      [32m+[0m[0m id                     = (known after apply)
+      [32m+[0m[0m ingress                = [
+          [32m+[0m[0m {
+              [32m+[0m[0m cidr_blocks      = []
+              [32m+[0m[0m description      = "Postgres from app tier"
+              [32m+[0m[0m from_port        = 5432
+              [32m+[0m[0m ipv6_cidr_blocks = []
+              [32m+[0m[0m prefix_list_ids  = []
+              [32m+[0m[0m protocol         = "tcp"
+              [32m+[0m[0m security_groups  = (known after apply)
+              [32m+[0m[0m self             = false
+              [32m+[0m[0m to_port          = 5432
+            },
+        ]
+      [32m+[0m[0m name                   = "autoscaling-platform-prod-db-sg"
+      [32m+[0m[0m name_prefix            = (known after apply)
+      [32m+[0m[0m owner_id               = (known after apply)
+      [32m+[0m[0m revoke_rules_on_delete = false
+      [32m+[0m[0m tags                   = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-db-sg"
+        }
+      [32m+[0m[0m tags_all               = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-db-sg"
+        }
+      [32m+[0m[0m vpc_id                 = (known after apply)
+    }
+
+[1m  # module.networking.aws_subnet.public[0][0m will be created
+[0m  [32m+[0m[0m resource "aws_subnet" "public" {
+      [32m+[0m[0m arn                                            = (known after apply)
+      [32m+[0m[0m assign_ipv6_address_on_creation                = false
+      [32m+[0m[0m availability_zone                              = "ap-south-1a"
+      [32m+[0m[0m availability_zone_id                           = (known after apply)
+      [32m+[0m[0m cidr_block                                     = "10.0.1.0/24"
+      [32m+[0m[0m enable_dns64                                   = false
+      [32m+[0m[0m enable_resource_name_dns_a_record_on_launch    = false
+      [32m+[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false
+      [32m+[0m[0m id                                             = (known after apply)
+      [32m+[0m[0m ipv6_cidr_block_association_id                 = (known after apply)
+      [32m+[0m[0m ipv6_native                                    = false
+      [32m+[0m[0m map_public_ip_on_launch                        = true
+      [32m+[0m[0m owner_id                                       = (known after apply)
+      [32m+[0m[0m private_dns_hostname_type_on_launch            = (known after apply)
+      [32m+[0m[0m tags                                           = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-public-1"
+        }
+      [32m+[0m[0m tags_all                                       = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-public-1"
+        }
+      [32m+[0m[0m vpc_id                                         = (known after apply)
+    }
+
+[1m  # module.networking.aws_subnet.public[1][0m will be created
+[0m  [32m+[0m[0m resource "aws_subnet" "public" {
+      [32m+[0m[0m arn                                            = (known after apply)
+      [32m+[0m[0m assign_ipv6_address_on_creation                = false
+      [32m+[0m[0m availability_zone                              = "ap-south-1b"
+      [32m+[0m[0m availability_zone_id                           = (known after apply)
+      [32m+[0m[0m cidr_block                                     = "10.0.2.0/24"
+      [32m+[0m[0m enable_dns64                                   = false
+      [32m+[0m[0m enable_resource_name_dns_a_record_on_launch    = false
+      [32m+[0m[0m enable_resource_name_dns_aaaa_record_on_launch = false
+      [32m+[0m[0m id                                             = (known after apply)
+      [32m+[0m[0m ipv6_cidr_block_association_id                 = (known after apply)
+      [32m+[0m[0m ipv6_native                                    = false
+      [32m+[0m[0m map_public_ip_on_launch                        = true
+      [32m+[0m[0m owner_id                                       = (known after apply)
+      [32m+[0m[0m private_dns_hostname_type_on_launch            = (known after apply)
+      [32m+[0m[0m tags                                           = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-public-2"
+        }
+      [32m+[0m[0m tags_all                                       = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-public-2"
+        }
+      [32m+[0m[0m vpc_id                                         = (known after apply)
+    }
+
+[1m  # module.networking.aws_vpc.main[0m will be created
+[0m  [32m+[0m[0m resource "aws_vpc" "main" {
+      [32m+[0m[0m arn                                  = (known after apply)
+      [32m+[0m[0m cidr_block                           = "10.1.0.0/16"
+      [32m+[0m[0m default_network_acl_id               = (known after apply)
+      [32m+[0m[0m default_route_table_id               = (known after apply)
+      [32m+[0m[0m default_security_group_id            = (known after apply)
+      [32m+[0m[0m dhcp_options_id                      = (known after apply)
+      [32m+[0m[0m enable_dns_hostnames                 = true
+      [32m+[0m[0m enable_dns_support                   = true
+      [32m+[0m[0m enable_network_address_usage_metrics = (known after apply)
+      [32m+[0m[0m id                                   = (known after apply)
+      [32m+[0m[0m instance_tenancy                     = "default"
+      [32m+[0m[0m ipv6_association_id                  = (known after apply)
+      [32m+[0m[0m ipv6_cidr_block                      = (known after apply)
+      [32m+[0m[0m ipv6_cidr_block_network_border_group = (known after apply)
+      [32m+[0m[0m main_route_table_id                  = (known after apply)
+      [32m+[0m[0m owner_id                             = (known after apply)
+      [32m+[0m[0m tags                                 = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-vpc"
+        }
+      [32m+[0m[0m tags_all                             = {
+          [32m+[0m[0m "Environment" = "prod"
+          [32m+[0m[0m "Name"        = "autoscaling-platform-prod-vpc"
+        }
+    }
+
+[1mPlan:[0m [0m22 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  [32m+[0m[0m alb_dns_name   = (known after apply)
+  [32m+[0m[0m blue_asg_name  = "autoscaling-platform-prod-blue-asg"
+  [32m+[0m[0m db_endpoint    = (known after apply)
+  [32m+[0m[0m green_asg_name = "autoscaling-platform-prod-green-asg"
+  [32m+[0m[0m vpc_id         = (known after apply)
+[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Note: You didn't use the -out option to save this plan, so Terraform can't
+guarantee to take exactly these actions if you run "terraform apply" now.
