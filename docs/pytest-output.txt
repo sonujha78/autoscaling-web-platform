@@ -1,0 +1,29 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.4, pytest-9.1.1, pluggy-1.6.0 -- /home/sonu/autoscaling-web-platform/orchestrator/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/sonu/autoscaling-web-platform/orchestrator
+collecting ... collected 21 items
+
+tests/test_health_check.py::test_all_healthy_returns_true PASSED         [  4%]
+tests/test_health_check.py::test_one_unhealthy_fails_overall PASSED      [  9%]
+tests/test_health_check.py::test_empty_results_is_not_healthy PASSED     [ 14%]
+tests/test_moto_integration.py::test_get_and_shift_weights_with_mocked_elbv2 PASSED [ 19%]
+tests/test_rollback.py::test_zero_errors_no_rollback PASSED              [ 23%]
+tests/test_rollback.py::test_errors_below_threshold_no_rollback PASSED   [ 28%]
+tests/test_rollback.py::test_errors_at_threshold_triggers_rollback PASSED [ 33%]
+tests/test_rollback.py::test_errors_above_threshold_triggers_rollback PASSED [ 38%]
+tests/test_rollback.py::test_decision_reason_is_populated PASSED         [ 42%]
+tests/test_rollback.py::test_default_threshold_from_config_is_used PASSED [ 47%]
+tests/test_terraform_check.py::test_no_changes_is_not_destructive PASSED [ 52%]
+tests/test_terraform_check.py::test_pure_create_is_not_destructive PASSED [ 57%]
+tests/test_terraform_check.py::test_pure_update_is_not_destructive PASSED [ 61%]
+tests/test_terraform_check.py::test_pure_delete_is_destructive PASSED    [ 66%]
+tests/test_terraform_check.py::test_replace_create_then_delete_is_destructive PASSED [ 71%]
+tests/test_terraform_check.py::test_replace_delete_then_create_is_destructive PASSED [ 76%]
+tests/test_terraform_check.py::test_mixed_safe_and_destructive_changes PASSED [ 80%]
+tests/test_traffic_shift.py::test_first_step_from_zero PASSED            [ 85%]
+tests/test_traffic_shift.py::test_middle_step PASSED                     [ 90%]
+tests/test_traffic_shift.py::test_step_caps_at_max_weight PASSED         [ 95%]
+tests/test_traffic_shift.py::test_already_at_max_stays_at_max PASSED     [100%]
+
+============================== 21 passed in 0.74s ==============================
