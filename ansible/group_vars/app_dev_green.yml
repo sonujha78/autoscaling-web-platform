@@ -1,2 +1,2 @@
 ---
-broken_app_mode: health_fail
+broken_app_mode: traffic_fail
