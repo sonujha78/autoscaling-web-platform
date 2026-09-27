@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autoscaling-web-platform
+  namespace: autoscaling-web-platform
+  labels:
+    backstage.io/kubernetes-id: autoscaling-web-platform
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: autoscaling-web-platform
+  template:
+    metadata:
+      labels:
+        app: autoscaling-web-platform
+        backstage.io/kubernetes-id: autoscaling-web-platform
+    spec:
+      containers:
+        - name: web
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
