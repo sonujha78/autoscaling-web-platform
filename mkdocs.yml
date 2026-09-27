@@ -1,0 +1,5 @@
+site_name: 'Auto-Scaling Web Platform'
+nav:
+  - Home: index.md
+plugins:
+  - techdocs-core

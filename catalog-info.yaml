@@ -6,6 +6,7 @@ metadata:
   annotations:
     github.com/project-slug: sonujha78/autoscaling-web-platform
     backstage.io/kubernetes-id: autoscaling-web-platform
+    backstage.io/techdocs-ref: dir:.
   links:
     - url: https://github.com/sonujha78/autoscaling-web-platform
       title: GitHub Repo
