@@ -6,7 +6,7 @@ metadata:
   labels:
     backstage.io/kubernetes-id: autoscaling-web-platform
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: autoscaling-web-platform
