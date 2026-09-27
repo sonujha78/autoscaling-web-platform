@@ -1,0 +1,19 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: autoscaling-web-platform
+  description: Production-grade auto-scaling web platform with Terraform (AWS), Ansible blue-green deployment, and Python orchestrator with auto-rollback
+  annotations:
+    github.com/project-slug: sonujha78/autoscaling-web-platform
+    backstage.io/kubernetes-id: autoscaling-web-platform
+  links:
+    - url: https://github.com/sonujha78/autoscaling-web-platform
+      title: GitHub Repo
+      icon: github
+spec:
+  type: service
+  lifecycle: production
+  owner: guests
+  system: autoscaling-platform
+  dependsOn:
+    - resource:default/autoscaling-alb
