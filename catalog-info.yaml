@@ -15,7 +15,7 @@ metadata:
 spec:
   type: service
   lifecycle: production
-  owner: guests
+  owner: platform-team
   system: autoscaling-platform
   dependsOn:
     - resource:default/autoscaling-alb
